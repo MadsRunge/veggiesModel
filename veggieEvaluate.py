@@ -2,19 +2,19 @@ import tensorflow as tf
 import numpy as np
 import os
 
-# Load the trained model
+
 model = tf.keras.models.load_model('vegetable_scanner_model.h5')
 
-# Set up paths
+
 test_data_dir = 'testRed'  
 img_width, img_height = 224, 224
 
-# List of vegetable classes
+
 vegetable_classes = ['bean', 'bitter_gourd', 'bottle_gourd', 'brinjal', 'broccoli', 
                      'cabbage', 'capsicum', 'carrot', 'cauliflower', 'cucumber', 
                      'papaya', 'potato', 'pumpkin', 'radish', 'tomato']
 
-# Prepare the test data generator
+
 test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
     preprocessing_function=tf.keras.applications.resnet_v2.preprocess_input
 )
@@ -28,11 +28,11 @@ test_generator = test_datagen.flow_from_directory(
     shuffle=False
 )
 
-# Evaluate the model on the test set
+
 test_loss, test_acc = model.evaluate(test_generator)
 print(f"Test accuracy: {test_acc:.2f}")
 
-# Function to predict a single image
+
 def predict_image(image_path):
     img = tf.keras.preprocessing.image.load_img(image_path, target_size=(img_width, img_height))
     img_array = tf.keras.preprocessing.image.img_to_array(img)
@@ -44,7 +44,7 @@ def predict_image(image_path):
     
     return predicted_class, confidence
 
-# Test prediction on a few images
+
 test_images = [
     os.path.join(test_data_dir, vegetable, os.listdir(os.path.join(test_data_dir, vegetable))[0])
     for vegetable in vegetable_classes
